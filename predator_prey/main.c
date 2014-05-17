@@ -173,17 +173,17 @@ int result(int *margin, int *number)
 */
 int ran(double randomnumber, double dn, double dm)
 {
-    // if a is A, then give it 0
+    // if a is A return 0
     if(randomnumber<dn)
     {
         return 0;
     }
-    // if a is E, give it 2
+    // if a is B return 1
     else if(randomnumber>dn && randomnumber<(dn + dm))
     {
         return 1;
     }
-    // if a is B, give it 1
+    // if a is E return 2
     else
     {
         return 2;
