@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #define N 3200
 #define B 0.1
@@ -25,167 +26,109 @@
 #define P1 0.25
 #define P2 0.05
 
-
 #define random() rand()/(RAND_MAX+1.0)
 
+// define a data structure in convinience of passing data
+struct Pattern{
+    int n;
+    int m;
+    double time;
+};
 
-int result(int *margin, int *number);
-int ran(double randomnumber, double dn, double dm);
+int simulation(struct Pattern *patt);
+double deltat(double lambda);
+
 
 int main(int argc, char *argv[])
 {
-    int n; // number of predators
-    int m; // number of prey
-    int e; // number of empty space
-    int i, j, k, ii;
-    double nn;
-    int margin[3] = {0, 0, 0}; // store change of n,m
-    int number[2] = {0, 0}; // store n,m,e for convenience of passing variables
+    struct Pattern *patt = malloc(sizeof(struct Pattern));
+    int i, j;
 
     FILE *fp;
     char filename[100];
 
-    nn = N;
-
-    // average of 1000 realization
-    for(ii=0; ii<1000; ii++)
+    // average of realizations
+    for(j=0; j<500; j++)
     {
         // initialize the system
-        n = 1600; // half of the system are predators
-        m = 1600; // half of the system are prey
-        e = N - m - n;
+        patt->n = 1600; // half of the system are predators
+        patt->m = 1600; // half of the system are prey
+        patt->time = 0;
 
-        sprintf(filename, "./data/%i.out", ii);
+        sprintf(filename, "./data/%i.out", j);
         fp = fopen(filename, "w");
 
-        // 50000 time steps
-        for(i=0; i<50000; i++)
+        // simulation
+        for(i=0; i<300000; i++)
         {
-            number[0] = n;
-            number[1] = m;
-
-            // making small increcments of time
-            for(j=0; j<20; j++)
-            {
-                for(k=0; k<3; k++)
-                {
-                    margin[k] = 0;
-                }
-
-                result(margin, number); // do the simulation
-
-                // apply the change of n,m,e
-                n += margin[0];
-                m += margin[1];
-                e += margin[2];
-            }
-            fprintf(fp, "%f %f %f\n",n/nn,m/nn,e/nn);
+            simulation(patt);
+            fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
         }
         fclose(fp);
-
     }
 
+    free(patt);
     return 0;
 }
 
-/*
- * ===FUNCTION
-===================================================================
-*          Name:    result
-*   Description:    The core of simulation.Take n,m,e in apply the rule of 
-*                   birth-death process and return the change in n,m,e.
-===================================================================
-*/
 
-int result(int *margin, int *number)
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  simulation
+ *  Description:  The core of simulation, input the present value of n,m,time and output
+ *  according values of next time point.
+ * =====================================================================================
+ */
+
+int simulation(struct Pattern *patt)
 {
-    double f1;
-    double f2;
-    double nn;
-    int a,b;
+    double nn = N;
+
+    double n = patt->n;
+    double m = patt->m;
+
+    double t1; // Transition rate: (n, m) -> (n-1, m) 
+    double t2; // Transition rate: (n, m) -> (n, m+1) 
+    double t3; // Transition rate: (n, m) -> (n, m-1) 
+    double t4; // Transition rate: (n, m) -> (n+1, m-1) 
+
+    double lambda;
+
     double r;
 
-    nn = N;
+    t1 = D1 * n;
+    t2 = 2 * B * m * ( N - n - m ) / nn;
+    t3 = 2 * P2 * n * m / nn + D2 * m;
+    t4 = 2 * P1 * n * m / nn;
 
-    f1 = number[0] / nn; // the percentage of n in system
-    f2 = number[1] / nn; // the percentage of m in system
-    a = ran(random(), f1, f2); // choose a agent randomly
-    b = ran(random(), f1, f2); // choose another agent randomly
+    lambda = t1 + t2 + t3 + t4;
 
-    if(a==0)
-    {
-        //predator die
-        if(random()<D1)
-        {
-            margin[0] -= 1;
-            margin[2] += 1;
-        }
-    }
-    else if(a==1)
-    {
-        //prey die
-        if(random()<D2)
-        {
-            margin[1] -= 1;
-            margin[2] += 1;
-            printf("Hello");
-        }
-    }
+    patt->time += deltat(lambda);
 
-    // a+b == 1 with AB, predate proccess
-    if(a+b == 1)
+    r = random() * lambda;
+
+    if(r<t1)
     {
-        r = random();
-        if(r<P1)
-        {
-            margin[1] -= 1;
-            margin[0] += 1;
-        }
-        else if(r>P1 && r<P1+P2)
-        {
-            margin[1] -= 1;
-            margin[2] += 1;
-        }
+        patt->n -=1;
     }
-    // a+b == 3 with BE, prey birth proccess
-    else if(a+b == 3)
+    else if(r<t1+t2)
     {
-        if(random() < B)
-        {
-            margin[2] -= 1;
-            margin[1] += 1;
-        }
+        patt->m +=1;
+    }
+    else if(r<t1+t2+t3)
+    {
+        patt->m -=1;
+    }
+    else
+    {
+        patt->n +=1;
+        patt->m -=1;
     }
 
     return 0;
 }
 
-
-/*
- * ===FUNCTION
-===================================================================
-*          Name:    ran
-*   Description:    Randomly choose an agent from system.
-*                   A = 0
-*                   B = 1
-*                   E = 2
-===================================================================
-*/
-int ran(double randomnumber, double dn, double dm)
+double deltat(double lambda)
 {
-    // if a is A return 0
-    if(randomnumber<dn)
-    {
-        return 0;
-    }
-    // if a is B return 1
-    else if(randomnumber>dn && randomnumber<(dn + dm))
-    {
-        return 1;
-    }
-    // if a is E return 2
-    else
-    {
-        return 2;
-    }
+    return - log(1 - random())/lambda;
 }
