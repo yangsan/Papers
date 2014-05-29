@@ -8,3 +8,9 @@ all: main_prisoner show.py
 
 main_prisoner: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+
+.PHONY: clean
+
+clean:
+	rm -f main_prisoner $(OBJECTS)
+
