@@ -20,7 +20,7 @@ show: all
 help:
 	@echo "make help	:	Get this help list."
 	@echo "make       	:	Compile the main program, run to get all the data needed."
-	@echo "make show    :   Show result plot."
+	@echo "make show   	:	Show result plot."
 	@echo "make clean  	:	Clean all object files, compiled files and data."
 
 .PHONY: clean
