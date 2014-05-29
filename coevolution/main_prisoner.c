@@ -30,13 +30,12 @@
 int main (int argc, char *argv[])
 {
     int defectors; //numbers of defectors in system
-    double nn;
+    double nn; //cast of system size
     int i, j;
     FILE *fp;
     char filename[100];
 
     nn = N;
-
 
     //moran process
     for(j=0; j < AVER; j++)
