@@ -47,7 +47,7 @@ int main (int argc, char *argv[])
         //do the simulation
         for(i=0; i < STEP; i++)
         {
-            moran(&defectors);
+            local(&defectors);
             fprintf(fp, "%f\n", defectors/nn);
         }
         fclose(fp);

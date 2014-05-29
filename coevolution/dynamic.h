@@ -25,3 +25,5 @@
 #define random() rand()/(RAND_MAX+0.0)
 
 void moran(int *number);
+void local(int *number);
+double payoff(double a, double b);
