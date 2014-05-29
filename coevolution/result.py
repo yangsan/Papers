@@ -26,8 +26,11 @@ for i in range(N):
 
 
 fig, ax = plt.subplots()
-ax.plot(np.asarray(moran_data))
-ax.scatter(scale, moran_simulation_data/float(N))
+moran_theory, = ax.plot(np.asarray(moran_data))
+moran_simu, = ax.plot(scale, moran_simulation_data/float(N))
+
+l1 = plt.legend([moran_theory, moran_simu],
+                ["moran-theory", "moran-simulation"])
 
 ax.set_xlim([0, 20])
 plt.show()
