@@ -1,10 +1,11 @@
 CFLAGS=-g -O2 -Wall -Isrc
 LIBS=-ldl
 OBJECTS=dynamic.o main_prisoner.o
+PY=resultl.py
 
-all: main_prisoner average.py data
+all: main_prisoner $(PY) data
 	./main_prisoner
-	python average.py
+	python $(PY)
 
 main_prisoner: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
