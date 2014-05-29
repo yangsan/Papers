@@ -30,26 +30,29 @@ int main (int argc, char *argv[])
 {
     int defectors; //numbers of defectors in system
     double nn;
-    int i;
+    int i, j;
     FILE *fp;
     char filename[100];
 
     nn = N;
 
-    //initialize the system
-    defectors = (int)(FRACTION * N);
 
-    sprintf(filename, "./data/prisoner.out");
-    fp = fopen(filename, "w");
-    //do the simulation
-    for(i=0; i < STEP; i++)
+    for(j=0; j < AVER; j++)
     {
-        moran(&defectors);
-//        printf("%d\n", defectors);
-        if(defectors == N) break;
-        fprintf(fp, "%f\n", defectors/nn);
+        //initialize the system
+        defectors = (int)(FRACTION * N);
+
+        sprintf(filename, "./data/%d.out", j);
+        fp = fopen(filename, "w");
+        //do the simulation
+        for(i=0; i < STEP; i++)
+        {
+            moran(&defectors);
+            fprintf(fp, "%f\n", defectors/nn);
+        }
+        fclose(fp);
     }
-    fclose(fp);
+
 
 
     return 0;
