@@ -21,7 +21,7 @@ for i in xrange(21):
 scale = np.linspace(0, 20, 4000)
 moran_simulation_data = np.zeros([4000])
 for i in range(N):
-    filename = "./data/%d.out" % (i)
+    filename = "./data/prisoner_moran/%d.out" % (i)
     moran_simulation_data += np.loadtxt(filename)
 
 

@@ -1,19 +1,19 @@
 CFLAGS=-g -O2 -Wall -Isrc
 LIBS=-ldl
 OBJECTS=dynamic.o main_prisoner.o
-PY=resultl.py
+#PY=resultl.py
 
-all: main_prisoner $(PY) data
+all: main_prisoner datafile
 	./main_prisoner
-	python $(PY)
 
 main_prisoner: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
-.PHONY: clean
+.PHONY: clean datafile
 
-data:
-	mkdir -p data
+datafile:
+	mkdir -p data/prisoner_moran
+	mkdir -p data/prisoner_local
 
 clean:
 	rm -f main_prisoner $(OBJECTS)

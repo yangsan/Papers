@@ -20,7 +20,7 @@ for i in xrange(21):
 scale = np.linspace(0, 20, 4000)
 local_simulation_data = np.zeros([4000])
 for i in range(N):
-    filename = "./data/%d.out" % (i)
+    filename = "./data/prisoner_local/%d.out" % (i)
     local_simulation_data += np.loadtxt(filename)
 
 
