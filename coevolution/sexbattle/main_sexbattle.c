@@ -111,7 +111,7 @@ int main (int argc, char *argv[])
         }
 
         printf("n=%d, local:%f, moran:%f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
-        fprintf(fp, "%d %f\n %f", n, average_local/(double)AVER, average_moran/(double)AVER);
+        fprintf(fp, "%d %f %f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
     }
     fclose(fp);
 

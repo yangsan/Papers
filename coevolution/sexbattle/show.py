@@ -6,8 +6,9 @@ filename = "timeseries.out"
 
 s = np.loadtxt(filename)
 
-x = s[:, 0]
-y = s[:, 1]
+n = s[:, 0]
+local = s[:, 1]
+moran = s[:, 2]
 #print np.sum(s)
 
 fig, ax = plt.subplots()
@@ -16,6 +17,7 @@ fig, ax = plt.subplots()
 #liney, = ax.plot(y)
 #l = plt.legend([linex, liney],["x", "y"])
 
-ax.scatter(x, y)
+ax.scatter(n, local)
+ax.scatter(n, moran, color="b")
 
 plt.show()
