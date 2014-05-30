@@ -27,4 +27,4 @@ help:
 .PHONY: clean
 
 clean:
-	rm -f $(TARGET) *.o
+	rm -f $(TARGET) *.o *.out
