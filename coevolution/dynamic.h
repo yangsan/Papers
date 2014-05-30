@@ -15,6 +15,9 @@
  *
  * =====================================================================================
  */
+#ifndef _dynamic_h
+#define _dynamic_h
+
 #include <stdlib.h>
 #define N 200
 #define B 1.0
@@ -27,3 +30,5 @@
 void moran(int *number);
 void local(int *number);
 double payoff(double a, double b);
+
+#endif
