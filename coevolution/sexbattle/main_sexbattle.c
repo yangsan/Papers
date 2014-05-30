@@ -52,44 +52,45 @@ int main (int argc, char *argv[])
     double halmiton1 = 0;
     double sum;
     double average;
-//    FILE *fp;
-//    char filename[100];
+    FILE *fp;
+    char filename[100];
     srand(time(NULL));
 
     Pattern *patt = malloc(sizeof(struct Pattern));
-    for(j=0; j<AVER; j++)
+
+    sprintf(filename, "timeseries.out");
+    fp = fopen(filename, "w");
+
+    for(n = 50; n < 501 ; n += 50)
     {
-//        sprintf(filename, "timeseries.out");
-
-        // initialize the system
-        n = 50;
-        patt->n = n;
-        patt->x = n/2;
-        patt->y = n/2;
-
-
-//        fp = fopen(filename, "w");
-        //simulation
-
-        sum = 0;
-        for(i=0; i<STEP; i++)
+        average = 0;
+        for(j=0; j<AVER; j++)
         {
-            halmiton1 = local(patt);
-            if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-            if(i>0)
+            // initialize the system
+            patt->n = n;
+            patt->x = n/2;
+            patt->y = n/2;
+
+            //simulation
+            sum = 0;
+            for(i=0; i<STEP; i++)
             {
-                sum += halmiton1 - halmiton;
+                halmiton1 = local(patt);
+                if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
+                if(i>0)
+                {
+                    sum += halmiton1 - halmiton;
+                }
+                halmiton = halmiton1;
             }
-//            fprintf(fp, "%f\n", halmiton1 - halmiton);
-            halmiton = halmiton1;
-    //        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
+            average += sum/(double)i * n;
         }
-        average += sum/(double)i * n;
-//        printf("%f\n", sum/(double)i * n);
-//        fclose(fp);
+        printf("%d %f\n", n, average/(double)AVER);
+        fprintf(fp, "%d %f\n", n, average/(double)AVER);
     }
+    fclose(fp);
+
     free(patt);
-    printf("%f\n", average/(double)AVER);
     return 0;
 }				
 /* ----------  end of function main  ---------- */

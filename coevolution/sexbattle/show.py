@@ -6,8 +6,8 @@ filename = "timeseries.out"
 
 s = np.loadtxt(filename)
 
-#x = s[:, 0]
-#y = s[:, 1]
+x = s[:, 0]
+y = s[:, 1]
 #print np.sum(s)
 
 fig, ax = plt.subplots()
@@ -16,6 +16,6 @@ fig, ax = plt.subplots()
 #liney, = ax.plot(y)
 #l = plt.legend([linex, liney],["x", "y"])
 
-ax.plot(s)
+ax.scatter(x, y)
 
 plt.show()
