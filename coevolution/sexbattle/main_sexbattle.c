@@ -21,6 +21,7 @@
 
 #define W 0.3
 #define STEP 500000
+#define AVER 500
 
 #define random() rand()/(RAND_MAX+0.0)
 
@@ -46,42 +47,49 @@ double halm (double x, double y);
 int main (int argc, char *argv[])
 {
     int n; // system size
-    int i;
+    int i, j;
     double halmiton = 0;
     double halmiton1 = 0;
-    double sum = 0;
-    FILE *fp;
-    char filename[100];
+    double sum;
+    double average;
+//    FILE *fp;
+//    char filename[100];
     srand(time(NULL));
 
     Pattern *patt = malloc(sizeof(struct Pattern));
-    sprintf(filename, "timeseries.out");
-
-    // initialize the system
-    n = 1000;
-    patt->n = n;
-    patt->x = n/2;
-    patt->y = n/2;
-
-
-    fp = fopen(filename, "w");
-    //simulation
-    for(i=0; i<STEP; i++)
+    for(j=0; j<AVER; j++)
     {
-//        halmiton1 = local(patt);
-        halmiton1 = local(patt);
-        if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-        if(i>0)
+//        sprintf(filename, "timeseries.out");
+
+        // initialize the system
+        n = 50;
+        patt->n = n;
+        patt->x = n/2;
+        patt->y = n/2;
+
+
+//        fp = fopen(filename, "w");
+        //simulation
+
+        sum = 0;
+        for(i=0; i<STEP; i++)
         {
-            sum += halmiton1 - halmiton;
+            halmiton1 = local(patt);
+            if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
+            if(i>0)
+            {
+                sum += halmiton1 - halmiton;
+            }
+//            fprintf(fp, "%f\n", halmiton1 - halmiton);
+            halmiton = halmiton1;
+    //        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
         }
-        fprintf(fp, "%f\n", halmiton1 - halmiton);
-        halmiton = halmiton1;
-//        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
+        average += sum/(double)i * n;
+//        printf("%f\n", sum/(double)i * n);
+//        fclose(fp);
     }
-    printf("%f\n", sum/(double)i * n);
-    fclose(fp);
     free(patt);
+    printf("%f\n", average/(double)AVER);
     return 0;
 }				
 /* ----------  end of function main  ---------- */
