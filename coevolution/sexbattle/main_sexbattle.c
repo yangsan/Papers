@@ -58,7 +58,7 @@ int main (int argc, char *argv[])
     sprintf(filename, "timeseries.out");
 
     // initialize the system
-    n = 1000;
+    n = 100;
     patt->n = n;
     patt->x = n/2;
     patt->y = n/2;
@@ -68,16 +68,15 @@ int main (int argc, char *argv[])
     //simulation
     for(i=0; i<STEP; i++)
     {
-//        halmiton1 = local(patt);
-        halmiton1 = local(patt);
+        halmiton1 = moran(patt);
         if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
         if(i>0)
         {
             sum += halmiton1 - halmiton;
         }
-        fprintf(fp, "%f\n", halmiton1 - halmiton);
+//        fprintf(fp, "%f\n", halmiton1);
         halmiton = halmiton1;
-//        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
+        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
     }
     printf("%f\n", sum/(double)i * n);
     fclose(fp);
