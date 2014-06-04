@@ -20,7 +20,7 @@
 #include <time.h>
 
 #define W 0.3
-#define STEP 10000000
+#define AVERAGE 10000000
 
 #define random() rand()/(RAND_MAX+0.0)
 
@@ -49,7 +49,8 @@ int main (int argc, char *argv[])
     int i;
     double halmiton = 0;
     double halmiton1 = 0;
-    double sum = 0;
+    double sum_moran = 0;
+    double sum_local = 0;
     FILE *fp;
     char filename[100];
     srand(time(NULL));
@@ -62,34 +63,41 @@ int main (int argc, char *argv[])
 
     fp = fopen(filename, "w");
 
-    for(n = 50; n<501; n += 50)
+    for(n = 10; n<501; n += 10)
     {
+        printf("%d\n", n);
         patt->n = n;
-        sum = 0;
-        //simulation
-        for(i=0; i<STEP; i++)
+
+        //moran process
+        sum_moran = 0;
+        for(i=0; i<AVERAGE; i++)
         {
-            patt->x = rand() % 400;
-            patt->y = rand() % 400;
+            patt->x = rand() % n;
+            patt->y = rand() % n;
 
             halmiton = halm(patt);
 
             moran(patt);
 
             halmiton1 = halm(patt);
-    //        if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-    //        if(i>0)
-    //        {
-    //            sum += halmiton1 - halmiton;
-    //        }
-    //        fprintf(fp, "%f\n", halmiton1);
-    //        halmiton = halmiton1;
-    //        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
-            sum += halmiton1 - halmiton;
+            sum_moran += halmiton1 - halmiton;
         }
-//        printf("%f\n", sum/(double)STEP * n);
-        fprintf(fp, "%d %f\n",n ,sum/(double)STEP * n);
 
+        //loal process
+        sum_local = 0;
+        for(i=0; i<AVERAGE; i++)
+        {
+            patt->x = rand() % n;
+            patt->y = rand() % n;
+
+            halmiton = halm(patt);
+
+            local(patt);
+
+            halmiton1 = halm(patt);
+            sum_local += halmiton1 - halmiton;
+        }
+        fprintf(fp, "%d %f %f\n", n, sum_moran/(double)AVERAGE * n, sum_local/(double)AVERAGE * n);
     }
     fclose(fp);
     free(patt);

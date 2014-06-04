@@ -6,17 +6,23 @@ filename = "timeseries.out"
 
 s = np.loadtxt(filename)
 
-x = s[1:, 0]
-y = s[1:, 1]
+guide = np.linspace(-20, 600, 1000)
+guide_zeros = np.zeros(len(guide))
+
+n = s[:, 0]
+moran = s[:, 1]
+local = s[:, 2]
 #print np.sum(s)
 
 fig, ax = plt.subplots()
 
-#linex, = ax.plot(x)
-#liney, = ax.plot(y)
-#l = plt.legend([linex, liney], ["x", "y"])
+ax.set_xlim([-10, 510])
+ax.set_ylim([-0.002, 0.005])
 
-ax.scatter(x, y)
+scatter_moran = ax.scatter(n, moran, color='blue')
+scatter_local = ax.scatter(n, local, color='red')
+l = plt.legend([scatter_moran, scatter_local], ["moran", "local"])
+ax.plot(guide, guide_zeros, color='black')
 #ax.plot(s)
 
 plt.show()
