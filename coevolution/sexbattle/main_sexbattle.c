@@ -58,35 +58,39 @@ int main (int argc, char *argv[])
     sprintf(filename, "timeseries.out");
 
     // initialize the system
-    n = 400;
-    patt->n = n;
 
 
     fp = fopen(filename, "w");
 
-    sum = 0;
-    //simulation
-    for(i=0; i<STEP; i++)
+    for(n = 50; n<501; n += 50)
     {
-        patt->x = rand() % 400;
-        patt->y = rand() % 400;
+        patt->n = n;
+        sum = 0;
+        //simulation
+        for(i=0; i<STEP; i++)
+        {
+            patt->x = rand() % 400;
+            patt->y = rand() % 400;
 
-        halmiton = halm(patt);
+            halmiton = halm(patt);
 
-        moran(patt);
+            moran(patt);
 
-        halmiton1 = halm(patt);
-//        if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-//        if(i>0)
-//        {
-//            sum += halmiton1 - halmiton;
-//        }
-//        fprintf(fp, "%f\n", halmiton1);
-//        halmiton = halmiton1;
-//        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
-        sum += halmiton1 - halmiton;
+            halmiton1 = halm(patt);
+    //        if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
+    //        if(i>0)
+    //        {
+    //            sum += halmiton1 - halmiton;
+    //        }
+    //        fprintf(fp, "%f\n", halmiton1);
+    //        halmiton = halmiton1;
+    //        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
+            sum += halmiton1 - halmiton;
+        }
+//        printf("%f\n", sum/(double)STEP * n);
+        fprintf(fp, "%d %f\n",n ,sum/(double)STEP * n);
+
     }
-    printf("%f\n", sum/(double)STEP * n);
     fclose(fp);
     free(patt);
     return 0;
