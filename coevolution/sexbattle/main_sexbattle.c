@@ -20,7 +20,7 @@
 #include <time.h>
 
 #define W 0.3
-#define STEP 50000
+#define STEP 10000000
 
 #define random() rand()/(RAND_MAX+0.0)
 
@@ -30,10 +30,10 @@ typedef struct Pattern{
     int y; // number of B kind in females
 } Pattern;
 
-double moran(Pattern *patt);
+void moran(Pattern *patt);
 double local(Pattern *patt);
 double payoff(double a, double b);
-double halm (double x, double y);
+double halm (Pattern *patt);
 
 
 
@@ -46,7 +46,7 @@ double halm (double x, double y);
 int main (int argc, char *argv[])
 {
     int n; // system size
-    int i, j;
+    int i;
     double halmiton = 0;
     double halmiton1 = 0;
     double sum = 0;
@@ -60,25 +60,33 @@ int main (int argc, char *argv[])
     // initialize the system
     n = 400;
     patt->n = n;
-    patt->x = n/20;
-    patt->y = n/20;
 
 
     fp = fopen(filename, "w");
+
+    sum = 0;
     //simulation
     for(i=0; i<STEP; i++)
     {
-        halmiton1 = moran(patt);
-        if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-        if(i>0)
-        {
-            sum += halmiton1 - halmiton;
-        }
+        patt->x = rand() % 400;
+        patt->y = rand() % 400;
+
+        halmiton = halm(patt);
+
+        moran(patt);
+
+        halmiton1 = halm(patt);
+//        if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
+//        if(i>0)
+//        {
+//            sum += halmiton1 - halmiton;
+//        }
 //        fprintf(fp, "%f\n", halmiton1);
-        halmiton = halmiton1;
+//        halmiton = halmiton1;
 //        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
+        sum += halmiton1 - halmiton;
     }
-    printf("%f\n", sum/(double)i * n);
+    printf("%f\n", sum/(double)STEP * n);
     fclose(fp);
     free(patt);
     return 0;
@@ -93,7 +101,7 @@ int main (int argc, char *argv[])
  *                modify it accordingly.
  * =====================================================================================
  */
-double moran(Pattern *patt)
+void moran(Pattern *patt)
 {
     double x;
     double y;
@@ -155,7 +163,7 @@ double moran(Pattern *patt)
         }
     }
 
-    return halm(x, y);
+//    return halm(x, y);
 }
 
 
@@ -233,7 +241,7 @@ double local(Pattern *patt)
         //if the second one is also B, nothing will happen
     }
 
-    return halm(x, y);
+    return halm(patt);
 }
 
 
@@ -256,8 +264,13 @@ double payoff(double a, double b)
  *  Description:  
  * =====================================================================================
  */
-double halm (double x, double y)
+double halm (Pattern *patt)
 {
+    double x,y;
+
+    x = (double)patt->x / (double)patt->n;
+    y = (double)patt->y / (double)patt->n;
+
     return - x * (1 - x) * y * (1 - y);
 }		
 /* -----  end of function halm  ----- */
