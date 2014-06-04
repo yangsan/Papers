@@ -20,7 +20,7 @@
 #include <time.h>
 
 #define W 0.3
-#define AVERAGE 10000000
+#define AVERAGE 100000000
 
 #define random() rand()/(RAND_MAX+0.0)
 
@@ -31,7 +31,7 @@ typedef struct Pattern{
 } Pattern;
 
 void moran(Pattern *patt);
-double local(Pattern *patt);
+void local(Pattern *patt);
 double payoff(double a, double b);
 double halm (Pattern *patt);
 
@@ -64,6 +64,7 @@ int main (int argc, char *argv[])
     sprintf(filename, "timeseries.out");
     fp = fopen(filename, "w");
 
+    //do the simulation for different system size
     for(n = 10; n<501; n += 10)
     {
         printf("%d\n", n);
@@ -73,14 +74,19 @@ int main (int argc, char *argv[])
         sum_moran = 0;
         for(i=0; i<AVERAGE; i++)
         {
-            patt->x = rand() % n;
+            //initialize the system randomly
+            patt->x = rand() % n; 
             patt->y = rand() % n;
 
+            //calculate H before simlation
             halmiton = halm(patt);
 
+            //do the simulation
             moran(patt);
 
+            //calculate H after simlation
             halmiton1 = halm(patt);
+
             sum_moran += halmiton1 - halmiton;
         }
 
@@ -117,16 +123,16 @@ int main (int argc, char *argv[])
  */
 void moran(Pattern *patt)
 {
-    double x;
-    double y;
-    double pi_ma;
-    double pi_mb;
-    double pi_fa;
-    double pi_fb;
-    double fit_ma;
-    double fit_mb;
-    double fit_fa;
-    double fit_fb;
+    double x; //fraction of A in males
+    double y; //fraction of B in females
+    double pi_ma; //fitness of an individual male of A kind
+    double pi_mb; //fitness of an individual male of B kind
+    double pi_fa; //fitness of an individual female of A kind
+    double pi_fb; //fitness of an individual female of B kind 
+    double fit_ma; //fitness of males of A kind
+    double fit_mb; //same
+    double fit_fa; //same
+    double fit_fb; //same
 
     x = (double)patt->x / (double)patt->n;
     y = (double)patt->y / (double)patt->n;
@@ -188,7 +194,7 @@ void moran(Pattern *patt)
  *                modify it accordingly.
  * =====================================================================================
  */
-double local(Pattern *patt)
+void local(Pattern *patt)
 {
     double x;
     double y;
@@ -255,7 +261,6 @@ double local(Pattern *patt)
         //if the second one is also B, nothing will happen
     }
 
-    return halm(patt);
 }
 
 
@@ -275,7 +280,7 @@ double payoff(double a, double b)
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  halm
- *  Description:  
+ *  Description:  Taking in a pattern, return the H value.
  * =====================================================================================
  */
 double halm (Pattern *patt)
