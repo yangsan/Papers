@@ -20,8 +20,7 @@
 #include <time.h>
 
 #define W 0.3
-#define STEP 500000
-#define AVER 500
+#define AVERAGE 10000000
 
 #define random() rand()/(RAND_MAX+0.0)
 
@@ -31,10 +30,10 @@ typedef struct Pattern{
     int y; // number of B kind in females
 } Pattern;
 
-double moran(Pattern *patt);
+void moran(Pattern *patt);
 double local(Pattern *patt);
 double payoff(double a, double b);
-double halm (double x, double y);
+double halm (Pattern *patt);
 
 
 
@@ -47,73 +46,59 @@ double halm (double x, double y);
 int main (int argc, char *argv[])
 {
     int n; // system size
-    int i, j;
+    int i;
     double halmiton = 0;
     double halmiton1 = 0;
-    double sum;
-//    double average_moran;
-    double average_local;
+    double sum_moran = 0;
+    double sum_local = 0;
     FILE *fp;
     char filename[100];
     srand(time(NULL));
 
     Pattern *patt = malloc(sizeof(struct Pattern));
+    sprintf(filename, "timeseries.out");
+
+    // initialize the system
+
 
     sprintf(filename, "timeseries.out");
     fp = fopen(filename, "w");
 
-    for(n = 10; n < 501 ; n += 10)
+    for(n = 10; n<501; n += 10)
     {
-        average_local = 0;
-        for(j=0; j<AVER; j++)
-        {
-            // initialize the system
-            patt->n = n;
-            patt->x = n/2;
-            patt->y = n/2;
+        printf("%d\n", n);
+        patt->n = n;
 
-            //simulation
-            sum = 0;
-            for(i=0; i<STEP; i++)
-            {
-                halmiton1 = local(patt);
-                if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-                if(i>0)
-                {
-                    sum += halmiton1 - halmiton;
-                }
-                halmiton = halmiton1;
-            }
-            average_local += sum/(double)i * n;
+        //moran process
+        sum_moran = 0;
+        for(i=0; i<AVERAGE; i++)
+        {
+            patt->x = rand() % n;
+            patt->y = rand() % n;
+
+            halmiton = halm(patt);
+
+            moran(patt);
+
+            halmiton1 = halm(patt);
+            sum_moran += halmiton1 - halmiton;
         }
 
-//        average_moran = 0;
-//        for(j=0; j<AVER; j++)
-//        {
-//            // initialize the system
-//            patt->n = n;
-//            patt->x = n/2;
-//            patt->y = n/2;
-//
-//            //simulation
-//            sum = 0;
-//            for(i=0; i<STEP; i++)
-//            {
-//                halmiton1 = moran(patt);
-//                if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-//                if(i>0)
-//                {
-//                    sum += halmiton1 - halmiton;
-//                }
-//                halmiton = halmiton1;
-//            }
-//            average_moran += sum/(double)i * n;
-//        }
+        //loal process
+        sum_local = 0;
+        for(i=0; i<AVERAGE; i++)
+        {
+            patt->x = rand() % n;
+            patt->y = rand() % n;
 
-//        printf("n=%d, local:%f, moran:%f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
-//        fprintf(fp, "%d %f %f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
-        printf("%d %f\n", n, average_local/(double)AVER);
-        fprintf(fp, "%d %f\n", n, average_local/(double)AVER);
+            halmiton = halm(patt);
+
+            local(patt);
+
+            halmiton1 = halm(patt);
+            sum_local += halmiton1 - halmiton;
+        }
+        fprintf(fp, "%d %f %f\n", n, sum_moran/(double)AVERAGE * n, sum_local/(double)AVERAGE * n);
     }
     fclose(fp);
 
@@ -130,7 +115,7 @@ int main (int argc, char *argv[])
  *                modify it accordingly.
  * =====================================================================================
  */
-double moran(Pattern *patt)
+void moran(Pattern *patt)
 {
     double x;
     double y;
@@ -192,7 +177,7 @@ double moran(Pattern *patt)
         }
     }
 
-    return halm(x, y);
+//    return halm(x, y);
 }
 
 
@@ -270,7 +255,7 @@ double local(Pattern *patt)
         //if the second one is also B, nothing will happen
     }
 
-    return halm(x, y);
+    return halm(patt);
 }
 
 
@@ -293,8 +278,13 @@ double payoff(double a, double b)
  *  Description:  
  * =====================================================================================
  */
-double halm (double x, double y)
+double halm (Pattern *patt)
 {
+    double x,y;
+
+    x = (double)patt->x / (double)patt->n;
+    y = (double)patt->y / (double)patt->n;
+
     return - x * (1 - x) * y * (1 - y);
 }		
 /* -----  end of function halm  ----- */
