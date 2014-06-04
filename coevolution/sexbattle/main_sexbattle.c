@@ -67,7 +67,7 @@ int main (int argc, char *argv[])
     //do the simulation for different system size
     for(n = 10; n<501; n += 10)
     {
-        printf("%d\n", n);
+        printf("%.0f%% done.\n", n/500. * 100);
         patt->n = n;
 
         //moran process
