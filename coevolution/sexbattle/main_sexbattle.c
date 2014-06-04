@@ -20,7 +20,7 @@
 #include <time.h>
 
 #define W 0.3
-#define STEP 500000
+#define STEP 50000
 
 #define random() rand()/(RAND_MAX+0.0)
 
@@ -46,7 +46,7 @@ double halm (double x, double y);
 int main (int argc, char *argv[])
 {
     int n; // system size
-    int i;
+    int i, j;
     double halmiton = 0;
     double halmiton1 = 0;
     double sum = 0;
@@ -58,10 +58,10 @@ int main (int argc, char *argv[])
     sprintf(filename, "timeseries.out");
 
     // initialize the system
-    n = 100;
+    n = 400;
     patt->n = n;
-    patt->x = n/2;
-    patt->y = n/2;
+    patt->x = n/20;
+    patt->y = n/20;
 
 
     fp = fopen(filename, "w");
@@ -76,7 +76,7 @@ int main (int argc, char *argv[])
         }
 //        fprintf(fp, "%f\n", halmiton1);
         halmiton = halmiton1;
-        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
+//        fprintf(fp, "%f %f\n", patt->x/(double)n, patt->y/(double)n);
     }
     printf("%f\n", sum/(double)i * n);
     fclose(fp);
