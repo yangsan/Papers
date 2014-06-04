@@ -15,7 +15,7 @@ timeseries.out: $(TARGET)
 
 help:
 	@echo "make help	:	Get this help list."
-	@echo "make       	:	Compile the main program, run to get all the data needed and plot."
+	@echo "make       	:	Compile the main program, run to get all the data needed and plot. Careful, may be very time consuming."
 	@echo "make show   	:	Show result plot."
 	@echo "make clean  	:	Clean all object files, compiled files and data."
 
