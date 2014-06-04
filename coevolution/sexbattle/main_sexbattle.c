@@ -51,7 +51,7 @@ int main (int argc, char *argv[])
     double halmiton = 0;
     double halmiton1 = 0;
     double sum;
-    double average_moran;
+//    double average_moran;
     double average_local;
     FILE *fp;
     char filename[100];
@@ -62,7 +62,7 @@ int main (int argc, char *argv[])
     sprintf(filename, "timeseries.out");
     fp = fopen(filename, "w");
 
-    for(n = 50; n < 501 ; n += 50)
+    for(n = 10; n < 501 ; n += 10)
     {
         average_local = 0;
         for(j=0; j<AVER; j++)
@@ -87,31 +87,33 @@ int main (int argc, char *argv[])
             average_local += sum/(double)i * n;
         }
 
-        average_moran = 0;
-        for(j=0; j<AVER; j++)
-        {
-            // initialize the system
-            patt->n = n;
-            patt->x = n/2;
-            patt->y = n/2;
+//        average_moran = 0;
+//        for(j=0; j<AVER; j++)
+//        {
+//            // initialize the system
+//            patt->n = n;
+//            patt->x = n/2;
+//            patt->y = n/2;
+//
+//            //simulation
+//            sum = 0;
+//            for(i=0; i<STEP; i++)
+//            {
+//                halmiton1 = moran(patt);
+//                if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
+//                if(i>0)
+//                {
+//                    sum += halmiton1 - halmiton;
+//                }
+//                halmiton = halmiton1;
+//            }
+//            average_moran += sum/(double)i * n;
+//        }
 
-            //simulation
-            sum = 0;
-            for(i=0; i<STEP; i++)
-            {
-                halmiton1 = moran(patt);
-                if(patt->x == 0 || patt->y == 0 || patt->x == n || patt->y == n) break;
-                if(i>0)
-                {
-                    sum += halmiton1 - halmiton;
-                }
-                halmiton = halmiton1;
-            }
-            average_moran += sum/(double)i * n;
-        }
-
-        printf("n=%d, local:%f, moran:%f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
-        fprintf(fp, "%d %f %f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
+//        printf("n=%d, local:%f, moran:%f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
+//        fprintf(fp, "%d %f %f\n", n, average_local/(double)AVER, average_moran/(double)AVER);
+        printf("%d %f\n", n, average_local/(double)AVER);
+        fprintf(fp, "%d %f\n", n, average_local/(double)AVER);
     }
     fclose(fp);
 
