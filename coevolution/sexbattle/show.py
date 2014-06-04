@@ -24,6 +24,5 @@ scatter_moran = ax.scatter(n, moran, color='blue')
 scatter_local = ax.scatter(n, local, color='red')
 l = plt.legend([scatter_moran, scatter_local], ["moran", "local"])
 ax.plot(guide, guide_zeros, color='black')
-#ax.plot(s)
 
 plt.show()
