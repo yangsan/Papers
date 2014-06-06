@@ -1,16 +1,17 @@
 CFLAGS=-g -O2 -Wall -Isrc
 LIBS=-ldl
 PY=script/show.py
-TARGET=bin/main
-OBJECTS=build/main.o
+NAME=gillespie
+TARGET=bin/$(NAME)
+OBJECTS=build/$(NAME).o
 
 all: bin build datafile $(TARGET)
 	./$(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $< -lm
 
-$(OBJECTS): src/main.c
+$(OBJECTS): src/$(NAME).c
 	$(CC) $(CFLAGS) -c  -o $@ $<
 
 bin:
