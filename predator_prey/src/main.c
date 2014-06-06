@@ -15,30 +15,27 @@
  *
  * =====================================================================================
  */
-#include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 #include "simulation.h"
 
 #define STEP 300000
 
+struct Pattern *initializePatt(int flag);
 
 int main(int argc, char *argv[])
 {
-    struct Pattern *patt = malloc(sizeof(struct Pattern));
     int i, j;
-
+    int flag = 0; //signal for different simulation method, Gillespie as default
     FILE *fp;
     char filename[100];
+    struct Pattern *patt = NULL;
 
     // average of realizations
     for(j=0; j<5; j++)
     {
         // initialize the system
-        patt->n = N/2; // half of the system are predators
-        patt->m = N/2; // half of the system are prey
-        patt->time = 0;
-
+        patt = initializePatt(flag);
+        
         sprintf(filename, "./data/%i.out", j);
         fp = fopen(filename, "w");
 
@@ -49,8 +46,18 @@ int main(int argc, char *argv[])
             fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
         }
         fclose(fp);
+        free(patt);
     }
 
-    free(patt);
     return 0;
+}
+
+struct Pattern *initializePatt(int flag)
+{
+    struct Pattern *patt = malloc(sizeof(struct Pattern));
+    patt->n = N/2;
+    patt->m = N/2;
+    patt->time = 0;
+
+    return patt;
 }
