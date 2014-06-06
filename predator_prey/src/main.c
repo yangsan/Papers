@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     nn = N;
 
     // average of 1000 realization
-    for(ii=0; ii<1000; ii++)
+    for(ii=0; ii<2; ii++)
     {
         // initialize the system
         n = 1600; // half of the system are predators
