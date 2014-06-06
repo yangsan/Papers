@@ -15,6 +15,9 @@
  *
  * =====================================================================================
  */
+#include <stdlib.h>
+#include <math.h>
+
 #ifndef _simulation_h
 #define _simulation_h
 
@@ -34,7 +37,7 @@ struct Pattern{
     double time;
 };
 
-int simulation(struct Pattern *patt);
+void birthDeathProcess(struct Pattern *patt);
 inline double deltat(double lambda);
 
 #endif

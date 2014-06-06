@@ -25,7 +25,7 @@
  * =====================================================================================
  */
 
-int simulation(struct Pattern *patt)
+void birthDeathProcess(struct Pattern *patt)
 {
     double nn = N;
 
@@ -70,8 +70,6 @@ int simulation(struct Pattern *patt)
         patt->n +=1;
         patt->m -=1;
     }
-
-    return 0;
 }
 
 

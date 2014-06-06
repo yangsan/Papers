@@ -20,7 +20,7 @@
 #include <math.h>
 #include "simulation.h"
 
-
+#define STEP 300000
 
 
 int main(int argc, char *argv[])
@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
         fp = fopen(filename, "w");
 
         // simulation
-        for(i=0; i<300000; i++)
+        for(i=0; i<STEP; i++)
         {
-            simulation(patt);
+            birthDeathProcess(patt);
             fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
         }
         fclose(fp);
