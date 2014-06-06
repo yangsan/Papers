@@ -36,7 +36,7 @@ struct Pattern{
 };
 
 int simulation(struct Pattern *patt);
-double deltat(double lambda);
+inline double deltat(double lambda);
 
 
 int main(int argc, char *argv[])
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     char filename[100];
 
     // average of realizations
-    for(j=0; j<500; j++)
+    for(j=0; j<5; j++)
     {
         // initialize the system
         patt->n = 1600; // half of the system are predators
@@ -104,6 +104,7 @@ int simulation(struct Pattern *patt)
     lambda = t1 + t2 + t3 + t4;
 
     patt->time += deltat(lambda);
+//    patt->time += 1;
 
     r = random() * lambda;
 
@@ -128,7 +129,9 @@ int simulation(struct Pattern *patt)
     return 0;
 }
 
-double deltat(double lambda)
+
+/* -----  end of function deltat  ----- */
+inline double deltat(double lambda)
 {
     return - log(1 - random())/lambda;
 }
