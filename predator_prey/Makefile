@@ -1,29 +1,25 @@
 CFLAGS=-g -O2 -Wall -Isrc
-LIBS=-ldl
+MATHLIB=-lm
 PY=script/show.py
-NAME=gillespie
-TARGET=bin/$(NAME)
-OBJECTS=build/$(NAME).o
+TARGET=bin/main
 
-all: bin build datafile $(TARGET)
+SOURCES=src/main.c
+OBJECTS=build/simulation.o
+
+all: build $(TARGET)
 	./$(TARGET)
+	python $(PY)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $< -lm
+	$(CC) $(CFLAGS) $(OBJECTS) $(SOURCES) -o $(TARGET) $(MATHLIB)
 
-$(OBJECTS): src/$(NAME).c
-	$(CC) $(CFLAGS) -c  -o $@ $<
-
-bin:
-	mkdir -p bin
-
-datafile:
-	mkdir -p data
+$(OBJECTS): src/simulation.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 build:
 	mkdir -p build
+	mkdir -p bin
+	mkdir -p data
 
 clean:
-	rm -rf bin
-	rm -rf build
-	rm -rf data
+	rm -rf bin data build
