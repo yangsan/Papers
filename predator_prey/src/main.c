@@ -56,8 +56,7 @@ void timeSeries(int flag)
     Pattern *patt = NULL;
 
     patt = initializePatt(patt, flag);
-//    sprintf(filename, "./data/%i.out", j);
-    sprintf(filename, "./data/0.out");
+    sprintf(filename, "./timeseries/0.out");
     fp = fopen(filename, "w");
 
     // simulation

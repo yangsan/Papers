@@ -23,7 +23,7 @@ $(OBJECTS): src/simulation.c
 build:
 	mkdir -p build
 	mkdir -p bin
-	mkdir -p data
+	mkdir -p timeseries
 
 clean:
 	rm -rf bin data build
