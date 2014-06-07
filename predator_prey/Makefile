@@ -1,16 +1,19 @@
 CFLAGS=-g -O2 -Wall -Isrc
 MATHLIB=-lm
-PY=script/show.py
 TARGET=bin/main
 
 SOURCES=src/main.c
 OBJECTS=build/simulation.o
 
-all: build $(TARGET)
-	./$(TARGET)
-
 help:
-	@echo "make average."
+	@echo "Usage:"
+	@echo "make timeseries: Show time series in Gillespie algorithm."
+	@echo "make uniform: Show time series in uniform time intervals."
+	@echo "make average: Show time series under Gillespie algorithm over 100 average."
+
+timeseries: build $(TARGET)
+	./$(TARGET) 1
+	python script/show.py
 
 average: data/afteraverage.out
 	python script/averageshow.py

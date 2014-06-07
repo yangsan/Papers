@@ -23,31 +23,48 @@
 #define AVER 1000
 
 void timeSeries(int flag);
-void averageTimeSeries(int flag);
+void multipleTimeSeries(int flag);
 
 int main(int argc, char *argv[])
 {
-    int flag = 0; //signal for different simulation method, Gillespie as default
-
-    // check command line input
     if(2 == argc)
     {
-        if(0 == strcmp(argv[1], "uniform"))
+    char c = argv[1][0];
+
+        switch(c)
         {
-            flag = 1;
-        }
-        else
-        {
-            printf("Invalid input. Please enter \"uniform\" as input if you want uniform time series.\n");
-            goto error;
+            // time series under Gillespie algorithm
+            case '1':
+                timeSeries(0);
+                break;
+
+            // time series under unifor time intervals
+            case '2':
+                timeSeries(1);
+                break;
+
+            // time series over 100 average under Gillespie algorithm
+            case '3':
+                multipleTimeSeries(0);
+                break;
+
+            default:
+                goto error;
+                break;
         }
     }
-
-//    timeSeries(flag);
-    averageTimeSeries(flag);
+    else
+    {
+        goto error;
+    }
 
     return 0;
 error:
+    printf("Invalid input. Need help? Enter:\n");
+    printf("1 : Show time series in Gillespie algorithm.\n");
+    printf("2 : Show time series in uniform time intervals.\n");
+    printf("3 : Show time series under Gillespie algorithm over 100 average.\n");
+            
     return 1;
 }
 
@@ -66,14 +83,14 @@ void timeSeries(int flag)
     for(i=0; i<STEP; ++i)
     {
         birthDeathProcess(patt);
-        fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
+        fprintf(fp, "%f %f %f\n",patt->time, patt->n/(double)N, patt->m/(double)N);
     }
     fclose(fp);
 
     free(patt);
 }
 
-void averageTimeSeries(int flag)
+void multipleTimeSeries(int flag)
 {
     int j;
     FILE *fp;
