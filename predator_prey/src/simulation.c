@@ -25,9 +25,9 @@
  * =====================================================================================
  */
 
-struct Pattern *initializePatt(int flag)
+Pattern *initializePatt(int flag)
 {
-    struct Pattern *patt = malloc(sizeof(struct Pattern));
+    Pattern *patt = malloc(sizeof(Pattern));
     patt->n = N/2;
     patt->m = N/2;
     patt->time = 0;
@@ -44,7 +44,7 @@ struct Pattern *initializePatt(int flag)
     return patt;
 }
 
-void birthDeathProcess(struct Pattern *patt)
+void birthDeathProcess(Pattern *patt)
 {
     double nn = N;
 

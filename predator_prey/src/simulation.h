@@ -31,16 +31,16 @@
 #define random() rand()/(RAND_MAX+1.0)
 
 // define a data structure in convinience of passing data
-struct Pattern{
+typedef struct {
     int n;
     int m;
     double time;
     double (*timeIncrease)(double lambda);
-};
+} Pattern;
 
-void birthDeathProcess(struct Pattern *patt);
+void birthDeathProcess(Pattern *patt);
 double gillespie_time(double lambda);
 double uniform_time(double lambda);
-struct Pattern *initializePatt(int flag);
+Pattern *initializePatt(int flag);
 
 #endif

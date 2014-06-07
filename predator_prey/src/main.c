@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     int flag = 0; //signal for different simulation method, Gillespie as default
     FILE *fp;
     char filename[100];
-    struct Pattern *patt = NULL;
+    Pattern *patt = NULL;
 
     // check command line input
     if(2 == argc)
