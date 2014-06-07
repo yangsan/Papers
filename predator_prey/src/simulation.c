@@ -17,42 +17,57 @@
  */
 #include "simulation.h"
 
+
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  simulation
- *  Description:  The core of simulation, input the present value of n,m,time and output
- *  according values of next time point.
+ *         Name:  initializePatt
+ *  Description:  A method to initialize a patt.
+ *                Taking in a pointer to struct Pattern, if the pointer is NULL, allocate
+ *                the memory then initialize it; if not, only initialize it.
+ *                Choosing different time intervals according to the flag.
  * =====================================================================================
  */
 
 Pattern *initializePatt(Pattern *patt, int flag)
 {
+    // if the pointer is NULL, allocate the memory
     if(NULL == patt)
     {
         patt = malloc(sizeof(Pattern));
     }
+    // then initialize it
     patt->n = N/2;
     patt->m = N/2;
     patt->time = 0;
     
+    // choose the time interal method accordingly
     if(NULL == patt->timeIncrease)
     {
         if(0 == flag)
         {
-            patt->timeIncrease=gillespie_time;
+            patt->timeIncrease=gillespieTime;
         }
         else
         {
-            patt->timeIncrease=uniform_time;
+            patt->timeIncrease=uniformTime;
         }
     }
 
     return patt;
 }
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  birthDeathProcess
+ *  Description:  The core of simulation. Taking in a patt, apply the changes according
+ *                to algorithm.
+ * =====================================================================================
+ */
+
 void birthDeathProcess(Pattern *patt)
 {
-    double nn = N;
+    double nn = N; // cast N to double
 
     double n = patt->n;
     double m = patt->m;
@@ -71,11 +86,13 @@ void birthDeathProcess(Pattern *patt)
     t3 = 2 * P2 * n * m / nn + D2 * m;
     t4 = 2 * P1 * n * m / nn;
 
+    // calculate lambda according to Gillespie algorithm
     lambda = t1 + t2 + t3 + t4;
 
+    // increase time
     patt->time += patt->timeIncrease(lambda);
-//    patt->time += 1;
 
+    // choose a event randomly
     r = random() * lambda;
 
     if(r<t1)
@@ -98,13 +115,27 @@ void birthDeathProcess(Pattern *patt)
 }
 
 
-/* -----  end of function deltat  ----- */
-double gillespie_time(double lambda)
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  gillespieTime
+ *  Description:  Return time interval accoring to Gillespie algorithm.
+ * =====================================================================================
+ */
+
+double gillespieTime(double lambda)
 {
     return - log(1 - random())/lambda;
 }
 
-double uniform_time(double lambda)
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  uniformTime
+ *  Description:  Return uniform time interval.
+ * =====================================================================================
+ */
+
+double uniformTime(double lambda)
 {
     return 1.0;
 }

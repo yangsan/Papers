@@ -29,8 +29,6 @@ int main(int argc, char *argv[])
 {
     if(2 == argc)
     {
-//    char c = argv[1][0];
-
         switch(argv[1][0])
         {
             // time series under Gillespie algorithm
@@ -68,6 +66,14 @@ error:
     return 1;
 }
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  timeSeries
+ *  Description:  Taking in a flag for different algorithm.
+ *                Apply birthDeathProcess method to do the simulation and write the 
+ *                result into a file.
+ * =====================================================================================
+ */
 void timeSeries(int flag)
 {
     int i;
@@ -75,14 +81,17 @@ void timeSeries(int flag)
     char filename[100];
     Pattern *patt = NULL;
 
+    // intialize patt to store data
     patt = initializePatt(patt, flag);
     sprintf(filename, "./data/timeseries/0.out");
     fp = fopen(filename, "w");
 
-    // simulation
+    // simulation for STEP time steps
     for(i=0; i<STEP; ++i)
     {
+        // apply the simulation method
         birthDeathProcess(patt);
+        // write result into file
         fprintf(fp, "%f %f %f\n",patt->time, patt->n/(double)N, patt->m/(double)N);
     }
     fclose(fp);
@@ -90,19 +99,29 @@ void timeSeries(int flag)
     free(patt);
 }
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  multipltTimeSeries
+ *  Description:  Apply birthDeathProcess method to do the simulation for AVER times
+ *                and write the results into files.
+ * =====================================================================================
+ */
 void multipleTimeSeries(int flag)
 {
     int j;
     FILE *fp;
     char filename[100];
-    int uniform_time_intervel;
+    int uniform_time_intervel; // an integer time intervel
     Pattern *patt = NULL;
 
+    // do the simluation for AVER times
     for(j=0; j<AVER; ++j)
     {
-//        printf("%d\n", j);
+        // initialize patt everytime
         patt = initializePatt(patt, flag);
 
+        // organize the filenames
         sprintf(filename, "./data/average/%d.out", j);
         fp = fopen(filename, "w");
 
@@ -111,6 +130,8 @@ void multipleTimeSeries(int flag)
         while(uniform_time_intervel < 501)
         {
             birthDeathProcess(patt);
+            // only print out result when time reach a integer level so sample, for the
+            // convenience of averaging
             if(patt->time > uniform_time_intervel)
             {
                 fprintf(fp, "%d %d %d\n",uniform_time_intervel, patt->n, patt->m);

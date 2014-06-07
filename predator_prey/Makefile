@@ -9,7 +9,7 @@ help:
 	@echo "Usage:"
 	@echo "make timeseries: Show time series in Gillespie algorithm."
 	@echo "make uniform: Show time series in uniform time intervals."
-	@echo "make average: Show time series under Gillespie algorithm over 100 average."
+	@echo "make average: Show time series under Gillespie algorithm averaged over 1000 realization."
 
 timeseries: build $(TARGET)
 	./$(TARGET) 1

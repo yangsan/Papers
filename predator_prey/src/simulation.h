@@ -32,15 +32,15 @@
 
 // define a data structure in convinience of passing data
 typedef struct {
-    int n;
-    int m;
-    double time;
-    double (*timeIncrease)(double lambda);
+    int n; // number of kind A in system
+    int m; // number of kind B in system
+    double time; // time
+    double (*timeIncrease)(double lambda); // a pointer to function for different algorithm
 } Pattern;
 
-void birthDeathProcess(Pattern *patt);
-double gillespie_time(double lambda);
-double uniform_time(double lambda);
 Pattern *initializePatt(Pattern *patt, int flag);
+void birthDeathProcess(Pattern *patt);
+double gillespieTime(double lambda);
+double uniformTime(double lambda);
 
 #endif
