@@ -41,5 +41,6 @@ struct Pattern{
 void birthDeathProcess(struct Pattern *patt);
 double deltat(double lambda);
 double uniform(double lambda);
+struct Pattern *initializePatt(int flag);
 
 #endif

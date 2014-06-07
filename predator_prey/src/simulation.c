@@ -25,6 +25,25 @@
  * =====================================================================================
  */
 
+struct Pattern *initializePatt(int flag)
+{
+    struct Pattern *patt = malloc(sizeof(struct Pattern));
+    patt->n = N/2;
+    patt->m = N/2;
+    patt->time = 0;
+    
+    if(0 == flag)
+    {
+        patt->timeIncrease=deltat;
+    }
+    else
+    {
+        patt->timeIncrease=uniform;
+    }
+
+    return patt;
+}
+
 void birthDeathProcess(struct Pattern *patt)
 {
     double nn = N;
