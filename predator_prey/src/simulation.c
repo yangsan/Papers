@@ -48,7 +48,7 @@ void birthDeathProcess(struct Pattern *patt)
 
     lambda = t1 + t2 + t3 + t4;
 
-    patt->time += deltat(lambda);
+    patt->time += patt->timeIncrease(lambda);
 //    patt->time += 1;
 
     r = random() * lambda;
@@ -74,7 +74,12 @@ void birthDeathProcess(struct Pattern *patt)
 
 
 /* -----  end of function deltat  ----- */
-inline double deltat(double lambda)
+double deltat(double lambda)
 {
     return - log(1 - random())/lambda;
+}
+
+double uniform(double lambda)
+{
+    return 1.0;
 }

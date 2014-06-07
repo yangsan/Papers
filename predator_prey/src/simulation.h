@@ -35,9 +35,11 @@ struct Pattern{
     int n;
     int m;
     double time;
+    double (*timeIncrease)(double lambda);
 };
 
 void birthDeathProcess(struct Pattern *patt);
-inline double deltat(double lambda);
+double deltat(double lambda);
+double uniform(double lambda);
 
 #endif

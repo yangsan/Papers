@@ -25,7 +25,7 @@ struct Pattern *initializePatt(int flag);
 int main(int argc, char *argv[])
 {
     int i, j;
-    int flag = 0; //signal for different simulation method, Gillespie as default
+    int flag = 1; //signal for different simulation method, Gillespie as default
     FILE *fp;
     char filename[100];
     struct Pattern *patt = NULL;
@@ -58,6 +58,15 @@ struct Pattern *initializePatt(int flag)
     patt->n = N/2;
     patt->m = N/2;
     patt->time = 0;
+    
+    if(0 == flag)
+    {
+        patt->timeIncrease=deltat;
+    }
+    else
+    {
+        patt->timeIncrease=uniform;
+    }
 
     return patt;
 }

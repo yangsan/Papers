@@ -10,7 +10,7 @@ all: build $(TARGET)
 	./$(TARGET)
 	python $(PY)
 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) $(SOURCES)
 	$(CC) $(CFLAGS) $(OBJECTS) $(SOURCES) -o $(TARGET) $(MATHLIB)
 
 $(OBJECTS): src/simulation.c
