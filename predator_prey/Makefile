@@ -10,6 +10,10 @@ all: build $(TARGET)
 	./$(TARGET)
 	python $(PY)
 
+uniform: build $(TARGET)
+	./$(TARGET) uniform
+	python $(PY)
+
 $(TARGET): $(OBJECTS) $(SOURCES)
 	$(CC) $(CFLAGS) $(OBJECTS) $(SOURCES) -o $(TARGET) $(MATHLIB)
 
