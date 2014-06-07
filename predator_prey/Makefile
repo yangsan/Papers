@@ -6,6 +6,9 @@ TARGET=bin/main
 SOURCES=src/main.c
 OBJECTS=build/simulation.o
 
+all: build $(TARGET)
+	./$(TARGET)
+
 help:
 	@echo "make average."
 

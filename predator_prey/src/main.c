@@ -20,7 +20,7 @@
 #include "simulation.h"
 
 #define STEP 300000
-#define AVER 10
+#define AVER 1000
 
 void timeSeries(int flag);
 void averageTimeSeries(int flag);
@@ -75,9 +75,10 @@ void timeSeries(int flag)
 
 void averageTimeSeries(int flag)
 {
-    int i, j;
+    int j;
     FILE *fp;
     char filename[100];
+    int uniform_time_intervel;
     Pattern *patt = NULL;
 
     for(j=0; j<AVER; ++j)
@@ -88,11 +89,16 @@ void averageTimeSeries(int flag)
         sprintf(filename, "./data/average/%d.out", j);
         fp = fopen(filename, "w");
 
+        uniform_time_intervel = 0;
         // simulation
-        for(i=0; i<STEP; ++i)
+        while(uniform_time_intervel < 501)
         {
             birthDeathProcess(patt);
-            fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
+            if(patt->time > uniform_time_intervel)
+            {
+                fprintf(fp, "%d %d %d\n",uniform_time_intervel, patt->n, patt->m);
+                uniform_time_intervel += 1;
+            }
         }
         fclose(fp);
     }

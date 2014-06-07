@@ -2,7 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-filename = "./data/timeseries/0.out"
+#filename = "./data/timeseries/0.out"
+filename = "./data/average/0.out"
 
 data = np.loadtxt(filename)
 
