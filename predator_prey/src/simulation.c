@@ -34,11 +34,11 @@ struct Pattern *initializePatt(int flag)
     
     if(0 == flag)
     {
-        patt->timeIncrease=deltat;
+        patt->timeIncrease=gillespie_time;
     }
     else
     {
-        patt->timeIncrease=uniform;
+        patt->timeIncrease=uniform_time;
     }
 
     return patt;
@@ -93,12 +93,12 @@ void birthDeathProcess(struct Pattern *patt)
 
 
 /* -----  end of function deltat  ----- */
-double deltat(double lambda)
+double gillespie_time(double lambda)
 {
     return - log(1 - random())/lambda;
 }
 
-double uniform(double lambda)
+double uniform_time(double lambda)
 {
     return 1.0;
 }

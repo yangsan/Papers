@@ -39,8 +39,8 @@ struct Pattern{
 };
 
 void birthDeathProcess(struct Pattern *patt);
-double deltat(double lambda);
-double uniform(double lambda);
+double gillespie_time(double lambda);
+double uniform_time(double lambda);
 struct Pattern *initializePatt(int flag);
 
 #endif
