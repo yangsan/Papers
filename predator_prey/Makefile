@@ -6,9 +6,15 @@ TARGET=bin/main
 SOURCES=src/main.c
 OBJECTS=build/simulation.o
 
-all: build $(TARGET)
+help:
+	@echo "make average."
+
+average: data/afteraverage.out
+	python script/averageshow.py
+
+data/afteraverage.out: build $(TARGET)
 	./$(TARGET)
-	python $(PY)
+	python script/average.py
 
 uniform: build $(TARGET)
 	./$(TARGET) uniform
@@ -24,6 +30,7 @@ build:
 	mkdir -p build
 	mkdir -p bin
 	mkdir -p data/timeseries
+	mkdir -p data/average
 
 clean:
 	rm -rf bin data build

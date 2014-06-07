@@ -20,7 +20,7 @@
 #include "simulation.h"
 
 #define STEP 300000
-#define AVER 1000
+#define AVER 10
 
 void timeSeries(int flag);
 void averageTimeSeries(int flag);
@@ -43,8 +43,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    timeSeries(flag);
-//    averageTimeSeries(flag);
+//    timeSeries(flag);
+    averageTimeSeries(flag);
 
     return 0;
 error:
@@ -82,9 +82,10 @@ void averageTimeSeries(int flag)
 
     for(j=0; j<AVER; ++j)
     {
+//        printf("%d\n", j);
         patt = initializePatt(patt, flag);
 
-        sprintf(filename, "./averagetimeseries/%d.out", j);
+        sprintf(filename, "./data/average/%d.out", j);
         fp = fopen(filename, "w");
 
         // simulation
