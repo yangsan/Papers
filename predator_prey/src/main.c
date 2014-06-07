@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            printf("Invalid input. Please enter \"uniform\" as input.\n");
+            printf("Invalid input. Please enter \"uniform\" as input if you want uniform time series.\n");
             goto error;
         }
     }
@@ -66,4 +66,3 @@ int main(int argc, char *argv[])
 error:
     return 1;
 }
-
