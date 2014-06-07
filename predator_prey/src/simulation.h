@@ -41,6 +41,6 @@ typedef struct {
 void birthDeathProcess(Pattern *patt);
 double gillespie_time(double lambda);
 double uniform_time(double lambda);
-Pattern *initializePatt(int flag);
+Pattern *initializePatt(Pattern *patt, int flag);
 
 #endif

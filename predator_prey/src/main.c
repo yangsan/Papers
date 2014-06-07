@@ -21,12 +21,11 @@
 
 #define STEP 300000
 
-void timeSeries(Pattern *patt);
+void timeSeries(int flag);
 
 int main(int argc, char *argv[])
 {
     int flag = 0; //signal for different simulation method, Gillespie as default
-    Pattern *patt = NULL;
 
     // check command line input
     if(2 == argc)
@@ -41,24 +40,22 @@ int main(int argc, char *argv[])
             goto error;
         }
     }
-    patt = initializePatt(flag);
 
-    timeSeries(patt);
-    
-    free(patt);
-        
+    timeSeries(flag);
 
     return 0;
 error:
     return 1;
 }
 
-void timeSeries(Pattern *patt)
+void timeSeries(int flag)
 {
     int i;
     FILE *fp;
     char filename[100];
+    Pattern *patt = NULL;
 
+    patt = initializePatt(patt, flag);
 //    sprintf(filename, "./data/%i.out", j);
     sprintf(filename, "./data/0.out");
     fp = fopen(filename, "w");
@@ -70,4 +67,6 @@ void timeSeries(Pattern *patt)
         fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
     }
     fclose(fp);
+
+    free(patt);
 }

@@ -25,20 +25,26 @@
  * =====================================================================================
  */
 
-Pattern *initializePatt(int flag)
+Pattern *initializePatt(Pattern *patt, int flag)
 {
-    Pattern *patt = malloc(sizeof(Pattern));
+    if(NULL == patt)
+    {
+        patt = malloc(sizeof(Pattern));
+    }
     patt->n = N/2;
     patt->m = N/2;
     patt->time = 0;
     
-    if(0 == flag)
+    if(NULL == patt->timeIncrease)
     {
-        patt->timeIncrease=gillespie_time;
-    }
-    else
-    {
-        patt->timeIncrease=uniform_time;
+        if(0 == flag)
+        {
+            patt->timeIncrease=gillespie_time;
+        }
+        else
+        {
+            patt->timeIncrease=uniform_time;
+        }
     }
 
     return patt;
