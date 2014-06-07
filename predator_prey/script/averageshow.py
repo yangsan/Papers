@@ -33,11 +33,13 @@ f2 = soln[:, 1]
 fig, ax = plt.subplots()
 
 line1, = ax.plot(t, f1)
-#line2, = ax.plot(t, f2)
-#l1 = plt.legend([line1, line2],["$f_1$","$f_2$"],prop={'size':20})
+line2, = ax.plot(t, f2)
 
-ax.plot(s[:,0])
-#ax.plot(s[:,1])
+line3, = ax.plot(s[:,0])
+line4, = ax.plot(s[:,1])
 
+l1 = plt.legend([line1, line2, line3, line4],
+                ["theory:$f_1$","theory:$f_2$", "simulation:$f_1$", "simulation:$f_2$"]
+                )
 
 plt.show()

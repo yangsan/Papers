@@ -15,16 +15,17 @@ timeseries: build $(TARGET)
 	./$(TARGET) 1
 	python script/show.py
 
+
+uniform: build $(TARGET)
+	./$(TARGET) 2
+	python script/show.py
+
 average: data/afteraverage.out
 	python script/averageshow.py
 
 data/afteraverage.out: build $(TARGET)
-	./$(TARGET)
+	./$(TARGET) 3
 	python script/average.py
-
-uniform: build $(TARGET)
-	./$(TARGET) uniform
-	python $(PY)
 
 $(TARGET): $(OBJECTS) $(SOURCES)
 	$(CC) $(CFLAGS) $(OBJECTS) $(SOURCES) -o $(TARGET) $(MATHLIB)

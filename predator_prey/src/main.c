@@ -29,9 +29,9 @@ int main(int argc, char *argv[])
 {
     if(2 == argc)
     {
-    char c = argv[1][0];
+//    char c = argv[1][0];
 
-        switch(c)
+        switch(argv[1][0])
         {
             // time series under Gillespie algorithm
             case '1':
