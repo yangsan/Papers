@@ -21,12 +21,11 @@
 
 #define STEP 300000
 
+void timeSeries(Pattern *patt);
+
 int main(int argc, char *argv[])
 {
-    int i, j;
     int flag = 0; //signal for different simulation method, Gillespie as default
-    FILE *fp;
-    char filename[100];
     Pattern *patt = NULL;
 
     // check command line input
@@ -42,27 +41,33 @@ int main(int argc, char *argv[])
             goto error;
         }
     }
+    patt = initializePatt(flag);
 
-    // average of realizations
-    for(j=0; j<5; j++)
-    {
-        // initialize the system
-        patt = initializePatt(flag);
+    timeSeries(patt);
+    
+    free(patt);
         
-        sprintf(filename, "./data/%i.out", j);
-        fp = fopen(filename, "w");
-
-        // simulation
-        for(i=0; i<STEP; i++)
-        {
-            birthDeathProcess(patt);
-            fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
-        }
-        fclose(fp);
-        free(patt);
-    }
 
     return 0;
 error:
     return 1;
+}
+
+void timeSeries(Pattern *patt)
+{
+    int i;
+    FILE *fp;
+    char filename[100];
+
+//    sprintf(filename, "./data/%i.out", j);
+    sprintf(filename, "./data/0.out");
+    fp = fopen(filename, "w");
+
+    // simulation
+    for(i=0; i<STEP; i++)
+    {
+        birthDeathProcess(patt);
+        fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
+    }
+    fclose(fp);
 }
