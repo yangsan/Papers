@@ -20,8 +20,10 @@
 #include "simulation.h"
 
 #define STEP 300000
+#define AVER 1000
 
 void timeSeries(int flag);
+void averageTimeSeries(int flag);
 
 int main(int argc, char *argv[])
 {
@@ -42,6 +44,7 @@ int main(int argc, char *argv[])
     }
 
     timeSeries(flag);
+//    averageTimeSeries(flag);
 
     return 0;
 error:
@@ -56,16 +59,42 @@ void timeSeries(int flag)
     Pattern *patt = NULL;
 
     patt = initializePatt(patt, flag);
-    sprintf(filename, "./timeseries/0.out");
+    sprintf(filename, "./data/timeseries/0.out");
     fp = fopen(filename, "w");
 
     // simulation
-    for(i=0; i<STEP; i++)
+    for(i=0; i<STEP; ++i)
     {
         birthDeathProcess(patt);
         fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
     }
     fclose(fp);
+
+    free(patt);
+}
+
+void averageTimeSeries(int flag)
+{
+    int i, j;
+    FILE *fp;
+    char filename[100];
+    Pattern *patt = NULL;
+
+    for(j=0; j<AVER; ++j)
+    {
+        patt = initializePatt(patt, flag);
+
+        sprintf(filename, "./averagetimeseries/%d.out", j);
+        fp = fopen(filename, "w");
+
+        // simulation
+        for(i=0; i<STEP; ++i)
+        {
+            birthDeathProcess(patt);
+            fprintf(fp, "%f %d %d\n",patt->time, patt->n, patt->m);
+        }
+        fclose(fp);
+    }
 
     free(patt);
 }

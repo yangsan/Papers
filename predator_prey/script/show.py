@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-filename = "./timeseries/0.out"
+filename = "./data/timeseries/0.out"
 
 data = np.loadtxt(filename)
 
